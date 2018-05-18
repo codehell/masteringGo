@@ -1,30 +1,33 @@
 package main
 
 import (
-	"path/filepath"
-	"os"
-	"log/syslog"
-	"log"
+	"errors"
 	"fmt"
 )
 
-func main() {
-	programName := filepath.Base(os.Args[0])
-	sysLog, err := syslog.New(syslog.LOG_INFO, programName)
-	if err != nil {
-		log.Fatal(err)
+func returnError(a, b int) error {
+	if a == b {
+		err := errors.New("error in returnError() function")
+		return err
 	} else {
-		log.SetOutput(sysLog)
+		return nil
 	}
-	log.Println("LOG_INFO: Loggin in Go!")
-	fmt.Println("Wuff!")
-	sysLog, err = syslog.New(syslog.LOG_MAIL, "Some program")
-	if err != nil {
-		log.Fatal(err)
-	} else {
-		log.SetOutput(sysLog)
-	}
-	log.Println("LOG_MAIL: Loggin in GO")
-	fmt.Println("Wuff2!!")
+}
 
+func main() {
+	err := returnError(1, 2)
+	if err == nil {
+		fmt.Println("returnError() ended normaly")
+	} else {
+		fmt.Println(err)
+	}
+	err = returnError(1, 1)
+	if err == nil {
+		fmt.Println("returnError() ended normaly")
+	} else {
+		fmt.Println(err)
+	}
+	if err.Error() == "error in returnError() function" {
+		fmt.Println("!!")
+	}
 }
