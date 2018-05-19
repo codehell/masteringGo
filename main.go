@@ -1,33 +1,45 @@
 package main
 
 import (
-	"errors"
+	"os"
 	"fmt"
+	"errors"
+	"strconv"
 )
 
-func returnError(a, b int) error {
-	if a == b {
-		err := errors.New("error in returnError() function")
-		return err
-	} else {
-		return nil
-	}
-}
-
 func main() {
-	err := returnError(1, 2)
-	if err == nil {
-		fmt.Println("returnError() ended normaly")
-	} else {
-		fmt.Println(err)
+	fmt.Println(os.Args[1])
+	if len (os.Args) == 1 {
+		fmt.Println("Floats please")
+		os.Exit(1)
 	}
-	err = returnError(1, 1)
-	if err == nil {
-		fmt.Println("returnError() ended normaly")
-	} else {
-		fmt.Println(err)
+	arguments := os.Args
+	var err = errors.New("An error")
+	k := 1
+	var n float64
+
+	for err != nil {
+		if k >= len(arguments) {
+			fmt.Println("No floats")
+			return
+		}
+		n, err = strconv.ParseFloat(arguments[k], 64)
+		k++
 	}
-	if err.Error() == "error in returnError() function" {
-		fmt.Println("!!")
+	min, max := n, n
+
+	for i := 2; i < len(arguments); i++ {
+		n, err = strconv.ParseFloat(arguments[i], 64)
+		if err == nil {
+			if n < min {
+				min = n
+			}
+			if n > max {
+				max = n
+			}
+		}
 	}
+
+	fmt.Println("min: ", min)
+	fmt.Println("max: ", max)
 }
